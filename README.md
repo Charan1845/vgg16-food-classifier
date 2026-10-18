@@ -4,6 +4,8 @@ Transfer-learning food classifier built on VGG16, as a learning project before a
 
 ## Architecture
 
+![Architecture diagram](docs/architecture.svg)
+
 VGG16 convolutional base (ImageNet-pretrained) -> custom head:
 
 - Blocks 1-4: frozen
