@@ -4,3 +4,5 @@ checkpoints/
 outputs/
 .venv/
 venv/
+train_log.txt
+train_err.txt
