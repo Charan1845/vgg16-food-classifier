@@ -4,7 +4,11 @@ Transfer-learning food classifier built on VGG16, as a learning project before a
 
 ## Architecture
 
-![Architecture diagram](docs/architecture.svg)
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="docs/architecture-dark.svg">
+  <source media="(prefers-color-scheme: light)" srcset="docs/architecture-light.svg">
+  <img alt="Architecture diagram" src="docs/architecture-light.svg">
+</picture>
 
 VGG16 convolutional base (ImageNet-pretrained) -> custom head:
 
@@ -13,9 +17,20 @@ VGG16 convolutional base (ImageNet-pretrained) -> custom head:
 - GlobalAveragePooling2D
 - Dense(256, sigmoid)
 - Dropout(0.5)
-- Dense(101, softmax) — classes limited to `config.NUM_CLASSES` for faster iteration
+- Dense(17, softmax) — classes limited to `config.SELECTED_CLASSES` for faster iteration
 
-Trained on a subset of the [Food-101](https://www.tensorflow.org/datasets/catalog/food101) dataset.
+Trained on a 17-class subset of the [Food-101](https://www.tensorflow.org/datasets/catalog/food101) dataset.
+
+## Technologies used
+
+- **Python** — project language
+- **TensorFlow / Keras** — model, training loop, data pipeline (`tf.data`)
+- **VGG16** — pretrained ImageNet backbone, transfer learning + fine-tuning
+- **TensorFlow Datasets** — Food-101 loading
+- **NumPy** — array/image preprocessing
+- **scikit-learn** — evaluation metrics (classification report, confusion matrix)
+- **Streamlit** — interactive web app for uploading and classifying images
+- **Pillow (PIL)** — image I/O for the app
 
 ## Usage
 
@@ -24,4 +39,5 @@ pip install -r requirements.txt
 python -m src.train       # two-stage training
 python -m src.evaluate    # test-set metrics
 python -m src.predict path/to/image.jpg
+streamlit run app.py      # interactive web app
 ```
