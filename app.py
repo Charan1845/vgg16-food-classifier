@@ -72,7 +72,7 @@ st.markdown(
     f"""
     <div class="hero">
         <h1>🍲 Food classifier</h1>
-        <p>VGG16 transfer learning, fine-tuned on {config.NUM_CLASSES} Food-101 classes</p>
+        <p>Upload a photo and see what it thinks you're eating</p>
     </div>
     """,
     unsafe_allow_html=True,
