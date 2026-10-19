@@ -3,7 +3,6 @@ import os
 
 import numpy as np
 import tensorflow as tf
-import tensorflow_datasets as tfds
 
 from . import config
 
@@ -24,7 +23,7 @@ def main():
 
     model_path = os.path.join(config.CHECKPOINT_DIR, "food101_vgg16_final.keras")
     model = tf.keras.models.load_model(model_path)
-    class_names = tfds.builder("food101").info.features["label"].names[: config.NUM_CLASSES]
+    class_names = config.SELECTED_CLASSES
 
     image = load_image(args.image_path)
     preds = model.predict(image, verbose=0)[0]

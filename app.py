@@ -1,7 +1,6 @@
 import numpy as np
 import streamlit as st
 import tensorflow as tf
-import tensorflow_datasets as tfds
 from PIL import Image
 
 from src import config
@@ -12,11 +11,10 @@ st.set_page_config(page_title="Food classifier", page_icon=":fork_and_knife:")
 @st.cache_resource
 def load_model():
     model = tf.keras.models.load_model("checkpoints/food101_vgg16_final.keras")
-    class_names = tfds.builder("food101").info.features["label"].names[: config.NUM_CLASSES]
     # Warm up the graph now so the first real prediction isn't the slow one.
     dummy = np.zeros((1,) + config.IMAGE_SIZE + (3,), dtype=np.float32)
     model.predict(dummy, verbose=0)
-    return model, class_names
+    return model
 
 
 def predict(model, image: Image.Image):
@@ -29,9 +27,10 @@ def predict(model, image: Image.Image):
 
 st.title("Food classifier")
 st.caption(f"VGG16 transfer learning, fine-tuned on {config.NUM_CLASSES} Food-101 classes")
-st.caption("Classes: " + ", ".join(n.replace("_", " ") for n in load_model()[1]))
+st.caption("Classes: " + ", ".join(n.replace("_", " ") for n in config.SELECTED_CLASSES))
 
-model, class_names = load_model()
+model = load_model()
+class_names = config.SELECTED_CLASSES
 
 uploaded = st.file_uploader("Upload a food photo", type=["jpg", "jpeg", "png"])
 

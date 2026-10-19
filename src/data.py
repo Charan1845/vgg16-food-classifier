@@ -4,6 +4,13 @@ import tensorflow_datasets as tfds
 from . import config
 
 
+def _label_lookup(all_class_names):
+    """Maps each original Food-101 label id to its index in config.SELECTED_CLASSES, or -1."""
+    new_index = {name: i for i, name in enumerate(config.SELECTED_CLASSES)}
+    table = [new_index.get(name, -1) for name in all_class_names]
+    return tf.constant(table, dtype=tf.int64)
+
+
 def _preprocess(image, label, training):
     image = tf.image.resize(image, config.IMAGE_SIZE)
     if training:
@@ -21,8 +28,9 @@ def _make_split(split, training):
         as_supervised=True,
         shuffle_files=training,
     )
-    if config.NUM_CLASSES < info.features["label"].num_classes:
-        ds = ds.filter(lambda img, lbl: lbl < config.NUM_CLASSES)
+    lookup = _label_lookup(info.features["label"].names)
+    ds = ds.map(lambda img, lbl: (img, tf.gather(lookup, lbl)), num_parallel_calls=tf.data.AUTOTUNE)
+    ds = ds.filter(lambda img, lbl: lbl >= 0)
     ds = ds.map(
         lambda img, lbl: _preprocess(img, lbl, training),
         num_parallel_calls=tf.data.AUTOTUNE,
@@ -31,12 +39,11 @@ def _make_split(split, training):
         ds = ds.shuffle(1000, seed=config.SEED)
     ds = ds.batch(config.BATCH_SIZE)
     ds = ds.prefetch(tf.data.AUTOTUNE)
-    return ds, info
+    return ds
 
 
 def get_datasets():
     """Food-101 only ships train/validation splits; validation doubles as the held-out test set."""
-    train_ds, info = _make_split("train", training=True)
-    test_ds, _ = _make_split("validation", training=False)
-    class_names = info.features["label"].names[: config.NUM_CLASSES]
-    return train_ds, test_ds, class_names
+    train_ds = _make_split("train", training=True)
+    test_ds = _make_split("validation", training=False)
+    return train_ds, test_ds, config.SELECTED_CLASSES
