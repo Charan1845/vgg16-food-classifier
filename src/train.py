@@ -11,7 +11,9 @@ def _callbacks(name):
     ckpt_path = os.path.join(config.CHECKPOINT_DIR, f"{name}_best.keras")
     return [
         tf.keras.callbacks.ModelCheckpoint(ckpt_path, save_best_only=True, monitor="val_accuracy"),
-        tf.keras.callbacks.EarlyStopping(monitor="val_accuracy", patience=3, restore_best_weights=True),
+        tf.keras.callbacks.EarlyStopping(
+            monitor="val_accuracy", patience=config.EARLY_STOP_PATIENCE, restore_best_weights=True
+        ),
     ]
 
 
