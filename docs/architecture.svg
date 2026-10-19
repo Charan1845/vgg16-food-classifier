@@ -53,8 +53,8 @@
   <line x1="340" y1="616" x2="340" y2="656" stroke="#B4B2A9" stroke-width="1.5" marker-end="url(#arrow)"/>
 
   <rect x="210" y="656" width="260" height="56" rx="8" fill="#085041" stroke="#5DCAA5" stroke-width="0.5"/>
-  <text x="340" y="674" text-anchor="middle" dominant-baseline="central" font-size="14" font-weight="500" fill="#9FE1CB">Dense 101 · Softmax</text>
-  <text x="340" y="692" text-anchor="middle" dominant-baseline="central" font-size="12" fill="#5DCAA5">Food-101 class probabilities</text>
+  <text x="340" y="674" text-anchor="middle" dominant-baseline="central" font-size="14" font-weight="500" fill="#9FE1CB">Dense 17 · Softmax</text>
+  <text x="340" y="692" text-anchor="middle" dominant-baseline="central" font-size="12" fill="#5DCAA5">17-class probabilities</text>
 
   <text x="140" y="730" font-size="12" fill="#B4B2A9">Blue = frozen (ImageNet)   Coral = fine-tuned (block 5)</text>
   <text x="140" y="748" font-size="12" fill="#B4B2A9">Gray = structural ops   Teal = trainable head</text>
