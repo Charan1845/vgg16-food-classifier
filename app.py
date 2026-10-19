@@ -81,8 +81,9 @@ st.markdown(
 with st.sidebar:
     st.header("About")
     st.write(
-        "VGG16 conv base (ImageNet-pretrained) with blocks 1-4 frozen and "
-        "block 5 fine-tuned, feeding a custom classification head."
+        "Built on VGG16, a neural network pretrained on 1.4 million images. "
+        "Most of it stays as-is — only the last layers were fine-tuned and "
+        "retrained to recognize these 17 foods."
     )
     st.markdown("**Classes**")
     st.markdown(
