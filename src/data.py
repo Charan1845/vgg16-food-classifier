@@ -43,7 +43,15 @@ def _make_split(split, training):
 
 
 def get_datasets():
-    """Food-101 only ships train/validation splits; validation doubles as the held-out test set."""
-    train_ds = _make_split("train", training=True)
+    """True 3-way split: 90% of `train` for gradient updates, 10% held back for
+    early stopping / checkpoint selection. The `validation` split is never
+    touched here, so it stays a clean, unseen test set (see get_test_dataset)."""
+    train_ds = _make_split("train[:90%]", training=True)
+    val_ds = _make_split("train[90%:]", training=False)
+    return train_ds, val_ds, config.SELECTED_CLASSES
+
+
+def get_test_dataset():
+    """The untouched Food-101 `validation` split, used only for final reporting."""
     test_ds = _make_split("validation", training=False)
-    return train_ds, test_ds, config.SELECTED_CLASSES
+    return test_ds, config.SELECTED_CLASSES

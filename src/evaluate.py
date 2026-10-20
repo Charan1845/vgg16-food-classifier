@@ -5,14 +5,14 @@ import tensorflow as tf
 from sklearn.metrics import classification_report, confusion_matrix
 
 from . import config
-from .data import get_datasets
+from .data import get_test_dataset
 
 
 def main():
     model_path = os.path.join(config.CHECKPOINT_DIR, "food101_vgg16_final.keras")
     model = tf.keras.models.load_model(model_path)
 
-    _, test_ds, class_names = get_datasets()
+    test_ds, class_names = get_test_dataset()
 
     y_true = []
     y_pred = []
